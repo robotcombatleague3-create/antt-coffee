@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Lịch sử đơn hàng</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/icomoon.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/history.css">
+</head>
+<body class="page-history">
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">ANTT<small>Coffee</small></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li class="nav-item"><a href="voucher.html" class="nav-link">Voucher</a></li>
+                    <li class="nav-item cart">
+                        <a href="cart.html" class="nav-link">
+                            <span class="icon icon-shopping_cart"></span>
+                            <span class="bag d-flex justify-content-center align-items-center">
+                                <small id="cartCount">0</small>
+                            </span>
+                        </a>
+                    </li>
+                    <li id="loginContainer" class="nav-item">
+                        <a href="login.html" class="nav-link">
+                            <span class="icon icon-user"></span> Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <div class="container my-4">
+    <h3 class="text-white mb-3">Lịch sử đơn hàng</h3>
+
+    <!-- Bộ lọc -->
+    <div class="card card-body mb-3 history-filter">
+      <div class="form-row">
+        <div class="col-md-3 mb-2">
+          <label class="small mb-1">Trạng thái</label>
+          <select id="fStatus" class="form-control">
+            <option value="all">Tất cả</option>
+            <option value="CREATED">Chờ xác nhận</option>
+            <option value="CONFIRMED">Đã xác nhận</option>
+            <option value="COMPLETED">Đã hoàn tất</option>
+            <option value="CANCELLED">Đã hủy</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-2">
+          <label class="small mb-1">Từ ngày</label>
+          <input id="fFrom" type="date" class="form-control">
+        </div>
+        <div class="col-md-3 mb-2">
+          <label class="small mb-1">Đến ngày</label>
+          <input id="fTo" type="date" class="form-control">
+        </div>
+        <div class="col-md-3 mb-2">
+          <label class="small mb-1">Tìm kiếm</label>
+          <input id="fQuery" class="form-control" placeholder="Mã đơn / tên món">
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-2">
+        <button id="btnReset" class="btn btn-outline-secondary btn-sm mr-2">Đặt lại</button>
+        <button id="btnApply" class="btn btn-dark btn-sm">Lọc</button>
+      </div>
+    </div>
+
+    <!-- Thống kê -->
+    <div class="row mb-3">
+      <div class="col-md-3 mb-2"><div class="stat-card"><div class="muted">Tổng đơn</div><div id="stCount" class="h5 mb-0">0</div></div></div>
+      <div class="col-md-3 mb-2"><div class="stat-card"><div class="muted">Hoàn tất</div><div id="stDone" class="h5 mb-0">0</div></div></div>
+      <div class="col-md-3 mb-2"><div class="stat-card"><div class="muted">Đã hủy</div><div id="stCancel" class="h5 mb-0">0</div></div></div>
+      <div class="col-md-3 mb-2"><div class="stat-card"><div class="muted">Tổng chi</div><div id="stSpent" class="h5 mb-0">0 đ</div></div></div>
+    </div>
+
+    <!-- Danh sách đơn -->
+    <div id="orderList"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <script src="js/storage.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth-ui.js"></script>
+
+  <script src="js/nav.js"></script>
+  <script src="js/order-history.js"></script>
+</body>
+</html>

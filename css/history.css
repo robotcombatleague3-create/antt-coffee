@@ -1,0 +1,84 @@
+/* ===== History page look & feel ===== */
+
+/* Nâng cấp card lọc */
+.history-filter.card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: .75rem;
+  backdrop-filter: blur(2px);
+}
+.history-filter .form-control,
+.history-filter .custom-select,
+.history-filter input[type="date"] {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.18);
+  color: #fff;
+}
+.history-filter .form-control::placeholder { color: rgba(255,255,255,.6); }
+.history-filter label.small { color: rgba(255,255,255,.75); }
+
+/* Thẻ thống kê */
+.stat-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: .9rem;
+  padding: 1rem 1.2rem;
+  color: #fff;
+}
+.stat-card .muted { opacity: .7; font-size: .9rem; }
+
+/* Danh sách đơn */
+.order-card{
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: .9rem;
+}
+.order-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 1rem;
+  border-bottom:1px dashed rgba(255,255,255,.12);
+}
+.order-body{ padding:.9rem 1rem 1rem; }
+
+/* Bảng món trong đơn */
+.order-card .table{
+  color:#eaeaea;
+  margin-bottom:.5rem;
+}
+.order-card .table thead th{
+  border-color: rgba(255,255,255,.15);
+  color:#cfd3d7;
+}
+.order-card .table td,
+.order-card .table th{
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+/* Badge trạng thái */
+.badge-status{
+  letter-spacing:.3px;
+  padding:.45rem .55rem;
+  font-weight:600;
+}
+.badge-warning{ background:#856404; }
+.badge-info{ background:#0c5460; }
+.badge-success{ background:#155724; }
+.badge-secondary{ background:#6c757d; }
+
+/* Nút thao tác */
+.ops .btn{
+  margin:.25rem .4rem .25rem 0;
+  border-radius:.6rem;
+}
+.muted{ opacity:.75; }
+
+/* Responsive tinh tế */
+@media (max-width: 576px){
+  .order-header{ flex-direction:column; align-items:flex-start; }
+  .order-header > div:last-child{ margin-top:.5rem; }
+}
+
+.page-history { padding-top: 88px; }  /* desktop ~ 88–96px, tùy theme */
+@media (max-width: 991.98px) {
+  .page-history { padding-top: 64px; } /* mobile/tablet */
+}

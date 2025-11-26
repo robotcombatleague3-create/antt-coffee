@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Đánh giá</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="index.html">ANTT<small>Coffee</small></a>
+    <div class="ml-auto"><a class="btn btn-sm btn-outline-light mr-2" href="menu.html">Menu</a><span data-auth-slot></span></div>
+    </nav>
+    <div class="container my-4">
+    <h3>Đánh giá sản phẩm</h3>
+    <form id="rvForm" class="card card-body mb-3">
+        <div class="form-row">
+        <div class="col-md-3"><label>Sản phẩm</label><select id="rvProduct" class="form-control"></select></div>
+        <div class="col-md-2"><label>Sao</label><select id="rvRating" class="form-control"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div>
+        <div class="col-md-7"><label>Nội dung</label><input id="rvComment" class="form-control" placeholder="Cảm nhận của bạn..."></div>
+        </div>
+        <button class="btn btn-dark mt-3">Gửi đánh giá</button>
+    </form>
+    <h4>Danh sách đánh giá</h4>
+    <div id="reviewsBox"></div>
+    </div>
+    <script src="js/jquery.min.js"></script><script src="js/bootstrap.min.js"></script>
+    <script src="js/storage.js"></script><script src="js/api.js"></script><script src="js/auth-ui.js"></script>
+    <script>
+    function renderReviews(){
+        const pid = Number(document.getElementById('rvProduct').value)||null;
+        const list = api.listReviews(pid);
+        document.getElementById('reviewsBox').innerHTML = list.map(r=>`
+        <div class="border rounded p-2 mb-2">
+            <div class="small text-muted">${new Date(r.createdAt).toLocaleString()}</div>
+            <div>⭐ ${r.rating}/5</div>
+            <div>${r.comment}</div>
+            ${r.reply?`<div class="mt-1 p-2 bg-light"><em>Phản hồi admin:</em> ${r.reply}</div>`:''}
+        </div>`).join('') || '<p>Chưa có đánh giá.</p>';
+    }
+    document.addEventListener('DOMContentLoaded', ()=>{
+        const sel=document.getElementById('rvProduct');
+        api.getMenu().forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); });
+        document.getElementById('rvForm').addEventListener('submit', e=>{
+        e.preventDefault();
+        try{ api.addReview({ productId:Number(sel.value), rating:Number(document.getElementById('rvRating').value), comment:document.getElementById('rvComment').value.trim() }); document.getElementById('rvComment').value=''; renderReviews(); }
+        catch(err){ alert(err.message); }
+        });
+        renderReviews();
+    });
+    </script>
+</body>
+</html>
