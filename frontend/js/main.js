@@ -299,8 +299,11 @@ AOS.init({
 function updateLoginStatus() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const loginContainer = document.getElementById('loginContainer');
-    const cartNav = document.getElementById('cartNav');
+    const cartNav = document.getElementById('cartNav'); // Có thể null bên trang Admin
     const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+
+    // NẾU KHÔNG TÌM THẤY LOGIN CONTAINER (Vd: trang Admin thiếu ID này) THÌ DỪNG LẠI
+    if (!loginContainer) return;
 
     if (currentUser) {
         // Người dùng đã đăng nhập
@@ -315,11 +318,11 @@ function updateLoginStatus() {
             </div>
         `;
         
-        // Hiển thị giỏ hàng
-        cartNav.style.display = 'block';
-        
-        // Hiển thị số lượng trong giỏ hàng của user hiện tại
-        updateCartCount(currentUser.username);
+        // Chỉ thao tác với Cart nếu element này tồn tại
+        if (cartNav) {
+            cartNav.style.display = 'block';
+            updateCartCount(currentUser.username);
+        }
         
         // Enable các nút Add to Cart
         addToCartButtons.forEach(button => {
@@ -333,8 +336,10 @@ function updateLoginStatus() {
             </a>
         `;
         
-        // Ẩn giỏ hàng
-        cartNav.style.display = 'none';
+        // Ẩn giỏ hàng nếu có
+        if (cartNav) {
+            cartNav.style.display = 'none';
+        }
         
         // Disable các nút Add to Cart
         addToCartButtons.forEach(button => {
@@ -345,10 +350,13 @@ function updateLoginStatus() {
 
 // Cập nhật số lượng trong giỏ hàng theo user
 function updateCartCount(username) {
+    const cartElement = document.getElementById('cartCount');
+    if (!cartElement) return; // Kiểm tra an toàn
+
     const cartData = JSON.parse(localStorage.getItem('carts')) || {};
     const userCart = cartData[username] || [];
     const totalItems = userCart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById('cartCount').textContent = totalItems;
+    cartElement.textContent = totalItems;
 }
 
 // Thêm vào giỏ hàng
@@ -362,7 +370,6 @@ function addToCart(productName, price) {
     const cartData = JSON.parse(localStorage.getItem('carts')) || {};
     const userCart = cartData[currentUser.username] || [];
 
-    // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
     const existingItem = userCart.find(item => item.name === productName);
     if (existingItem) {
         existingItem.quantity += 1;
@@ -374,20 +381,17 @@ function addToCart(productName, price) {
         });
     }
 
-    // Lưu giỏ hàng mới vào localStorage
     cartData[currentUser.username] = userCart;
     localStorage.setItem('carts', JSON.stringify(cartData));
 
-    // Cập nhật số lượng hiển thị
     updateCartCount(currentUser.username);
 }
 
 // Đăng xuất
 function logout() {
     localStorage.removeItem('currentUser');
-    window.location.reload();
+    window.location.href = 'index.html'; // Chuyển về trang chủ thay vì reload tại chỗ
 }
 
 // Khởi tạo khi trang load
 document.addEventListener('DOMContentLoaded', updateLoginStatus);
-

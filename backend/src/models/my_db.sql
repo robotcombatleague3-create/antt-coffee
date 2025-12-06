@@ -1,0 +1,114 @@
+-- File: db_mysql_converted.sql
+
+DROP TABLE IF EXISTS `FEEDBACK`;
+DROP TABLE IF EXISTS `USE`;
+DROP TABLE IF EXISTS `DETAIL`;
+DROP TABLE IF EXISTS `ORDER`;
+DROP TABLE IF EXISTS `VOUCHER`;
+DROP TABLE IF EXISTS `CONTAIN`;
+DROP TABLE IF EXISTS `ITEM`;
+DROP TABLE IF EXISTS `MENU`;
+DROP TABLE IF EXISTS `CATEGORY`;
+DROP TABLE IF EXISTS `STAFF`;
+DROP TABLE IF EXISTS `CUSTOMER`;
+DROP TABLE IF EXISTS `ACCOUNT`;
+
+-- 1. ACCOUNT
+CREATE TABLE ACCOUNT (
+    Acc_id INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Join_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. CUSTOMER
+CREATE TABLE CUSTOMER (
+    Cus_id INT AUTO_INCREMENT PRIMARY KEY,
+    F_name VARCHAR(20) NOT NULL,
+    L_name VARCHAR(40) NOT NULL,
+    Phone VARCHAR(10) NOT NULL UNIQUE,
+    Points INT DEFAULT 0,
+    Acc_id INT UNIQUE,
+    Level VARCHAR(20) GENERATED ALWAYS AS (
+        CASE
+            WHEN Points < 200 THEN 'Bronze'
+            WHEN Points >= 200 AND Points < 500 THEN 'Silver'
+            WHEN Points >= 500 AND Points < 1000 THEN 'Gold'
+            ELSE 'Diamond'
+        END
+    ) STORED,
+    CONSTRAINT FK_Cus_Account FOREIGN KEY (Acc_id) REFERENCES ACCOUNT(Acc_id)
+);
+
+-- 3. STAFF
+CREATE TABLE STAFF (
+    Staff_id INT AUTO_INCREMENT PRIMARY KEY,
+    F_name VARCHAR(20) NOT NULL,
+    L_name VARCHAR(40) NOT NULL,
+    Acc_id INT NOT NULL UNIQUE,
+    CONSTRAINT FK_Staff_Account FOREIGN KEY (Acc_id) REFERENCES ACCOUNT(Acc_id)
+);
+
+-- 4. CATEGORY (Tạo trước để ITEM tham chiếu)
+CREATE TABLE CATEGORY (
+    Cate_id INT AUTO_INCREMENT PRIMARY KEY,
+    Cate_name VARCHAR(100) NOT NULL UNIQUE
+);
+-- Nạp dữ liệu mẫu cho Category ngay
+INSERT INTO CATEGORY (Cate_name) VALUES ('Cà phê'), ('Trà'), ('Đá xay');
+
+-- 5. ITEM (Sản phẩm)
+CREATE TABLE ITEM (
+    Item_id INT AUTO_INCREMENT PRIMARY KEY,
+    Item_name VARCHAR(100) NOT NULL,
+    Description VARCHAR(500),
+    Image VARCHAR(255),
+    Cate_id INT NOT NULL,
+    Price DECIMAL(10,2) DEFAULT 0,
+    CONSTRAINT CK_Cate_id FOREIGN KEY (Cate_id) REFERENCES CATEGORY(Cate_id)
+);
+
+-- 6. MENU & CONTAIN (Giữ cấu trúc nhưng đơn giản hóa cho MySQL)
+CREATE TABLE MENU (
+    Menu_id INT AUTO_INCREMENT PRIMARY KEY,
+    Menu_name VARCHAR(100) NOT NULL,
+    Time_start TIME NOT NULL,
+    Time_end TIME NOT NULL,
+    Active BIT DEFAULT 1,
+    Staff_id INT NOT NULL
+);
+
+-- 7. VOUCHER
+CREATE TABLE VOUCHER (
+    Voucher_id INT AUTO_INCREMENT PRIMARY KEY,
+    Voucher_name VARCHAR(100) NOT NULL,
+    Voucher_code VARCHAR(20) NOT NULL UNIQUE,
+    Description TEXT,
+    Value DECIMAL(10, 2) NOT NULL,
+    Min_order_val DECIMAL(10, 2) DEFAULT 0,
+    Quantity INT DEFAULT 0,
+    Max_usage_per_user INT DEFAULT 1,
+    Date_start DATETIME NOT NULL,
+    Date_end DATETIME NOT NULL
+);
+
+-- 8. ORDER (Dùng backtick `ORDER` vì trùng từ khóa)
+CREATE TABLE `ORDER` (
+    Order_id INT AUTO_INCREMENT PRIMARY KEY,
+    Order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Init_amount DECIMAL(12,2) DEFAULT 0,
+    Discount_amount DECIMAL(12,2) DEFAULT 0,
+    Total_amount DECIMAL(12, 2) DEFAULT 0,
+    Status VARCHAR(20) DEFAULT 'Pending',
+    Payment_method VARCHAR(20) DEFAULT 'Cash',
+    Cus_id INT NOT NULL,
+    Staff_id INT,
+    Voucher_id INT,
+    CONSTRAINT FK_Order_Voucher FOREIGN KEY (Voucher_id) REFERENCES VOUCHER(Voucher_id)
+    -- Tạm bỏ FK Customer/Staff để dễ test nếu chưa tạo user
+);
+
+-- Dữ liệu mẫu Voucher
+INSERT INTO VOUCHER (Voucher_name, Voucher_code, Description, Value, Min_order_val, Quantity, Date_start, Date_end)
+VALUES ('Demo Voucher', 'TEST10', 'Type: amount', 10000, 50000, 100, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY));

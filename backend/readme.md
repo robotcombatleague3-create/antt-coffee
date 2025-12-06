@@ -9,4 +9,6 @@ cp .env.example .env
 
 # That's it! The database will be set up automatically when you run:
 npm run dev
+
+# Rewrite .env port if necessary
 """
