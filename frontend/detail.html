@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Chi Tiết Sản Phẩm - ANTT Coffee</title>
+    <title>Chi tiết sản phẩm - ANTT Coffee</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -35,9 +35,9 @@
                     <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
                     <li class="nav-item"><a href="voucher.html" class="nav-link">Voucher</a></li>
                     <li id="cartNav" class="nav-item cart" style="display: none;">
-                        <a href="cart.html" class="nav-link"><span class="icon icon-shopping_cart"></span><span class="bag d-flex justify-content-center align-items-center"><small id="cartCount">0</small></span></a>
+                        <a href="cart.html" class="nav-link"><span class="icon icon-shopping_cart"></span><small id="cartCount">0</small></a>
                     </li>
-                    <li id="loginContainer" class="nav-item"><a href="login.html" class="nav-link"><span class="icon icon-user"></span> Login</a></li>
+                    <li id="loginContainer" class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -49,8 +49,8 @@
         <div class="container">
           <div class="row slider-text justify-content-center align-items-center">
             <div class="col-md-7 col-sm-12 text-center ftco-animate">
-            	<h1 class="mb-3 mt-5 bread">Chi Tiết Sản Phẩm</h1>
-	            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Product Detail</span></p>
+            	<h1 class="mb-3 mt-5 bread">Chi tiết sản phẩm</h1>
+	            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Chi tiết</span></p>
             </div>
           </div>
         </div>
@@ -61,28 +61,39 @@
     	<div class="container">
     		<div class="row">
     			<div class="col-lg-6 mb-5 ftco-animate">
-    				<a href="images/menu-2.jpg" class="image-popup" id="main-img-link"><img src="images/menu-2.jpg" class="img-fluid" alt="Colorlib Template" id="main-img"></a>
+    				<a href="#" class="image-popup" id="prod-img-link"><img src="images/menu-2.jpg" class="img-fluid" alt="ANTT Coffee" id="prod-img"></a>
     			</div>
     			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
-    				<h3 id="prod-name">Cà Phê Capuccino</h3>
-    				<p class="price"><span id="prod-price">30,000 VND</span></p>
-    				<p>Một sự kết hợp hoàn hảo giữa Espresso đậm đà và lớp bọt sữa mịn màng, mang lại trải nghiệm thưởng thức tinh tế. Được chọn lọc từ những hạt cà phê tốt nhất.</p>
-    				<div class="row mt-4">
-    					<div class="col-md-6">
-    						<div class="form-group d-flex">
+    				<h3 id="prod-name">Tên sản phẩm</h3>
+    				<p class="price"><span id="prod-price">0 đ</span></p>
+    				<p id="prod-desc">Mô tả sản phẩm đang được cập nhật...</p>
+    				
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<div class="form-group d-flex">
 		              <div class="select-wrap">
 	                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
 	                  <select name="" id="" class="form-control">
-	                  	<option value="">Nhỏ</option>
-	                    <option value="">Vừa</option>
-	                    <option value="">Lớn</option>
+	                  	<option value="S">Nhỏ</option>
+	                    <option value="M">Vừa</option>
+	                    <option value="L">Lớn</option>
 	                  </select>
 	                </div>
 		            </div>
-    					</div>
-    					<div class="w-100"></div>
-	            <div class="input-group col-md-6 d-flex mb-3">
-	             	<input type="number" id="quantity" class="form-control input-number" value="1" min="1" max="100">
+							</div>
+							<div class="w-100"></div>
+							<div class="input-group col-md-6 d-flex mb-3">
+	             	<span class="input-group-btn mr-2">
+	                	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
+	                   <i class="icon-minus"></i>
+	                	</button>
+	            		</span>
+	             	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+	             	<span class="input-group-btn ml-2">
+	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+	                     <i class="icon-plus"></i>
+	                 </button>
+	             	</span>
 	          	</div>
           	</div>
           	<p><a href="#" class="btn btn-primary py-3 px-5" id="btn-add-cart">Thêm vào giỏ hàng</a></p>
@@ -95,8 +106,53 @@
     	<div class="overlay"></div>
       <div class="container">
         <div class="row mb-5">
+          <div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Về Chúng Tôi</h2>
+              <p>ANTT Coffee là nơi hội tụ những hương vị cà phê tuyệt hảo, không gian ấm cúng và sự phục vụ tận tâm. Chúng tôi cam kết mang đến trải nghiệm tốt nhất cho khách hàng.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Liên Hệ</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker"></span><span class="text">Thủ Đức, TP. Hồ Chí Minh</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+84 123 456 789</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">antt@gmail.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Giờ Mở Cửa</h2>
+              <div class="block-21 mb-4 d-flex">
+                <div class="text">
+                  <h3 class="heading">Thứ Hai - Thứ Sáu</h3>
+                  <div class="meta">8:00 AM - 9:00 PM</div>
+                </div>
+              </div>
+              <div class="block-21 mb-4 d-flex">
+                <div class="text">
+                  <h3 class="heading">Thứ Bảy - Chủ Nhật</h3>
+                  <div class="meta">8:00 AM - 10:00 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
           <div class="col-md-12 text-center">
-            <p>Copyright &copy; All rights reserved | ANTT Coffee</p>
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | ANTT Coffee</p>
           </div>
         </div>
       </div>
@@ -116,41 +172,75 @@
     <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/jquery.timepicker.min.js"></script>
     <script src="js/scrollax.min.js"></script>
+    <script src="js/google-map.js"></script>
     <script src="js/main.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/nav.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Lấy tham số từ URL nếu có (Giả lập)
-            const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('name');
-            const price = urlParams.get('price');
-            const img = urlParams.get('img');
+		$(document).ready(function(){
+            // 1. TỪ ĐIỂN MÔ TẢ SẢN PHẨM (Tiếng Việt)
+            // Bạn có thể thêm nội dung cho các món khác tại đây
+            const productDescriptions = {
+                "Cà phê đen": "Cà phê đen truyền thống của ANTT Coffee được tuyển chọn từ những hạt Robusta chất lượng nhất. Hương vị đậm đà, mạnh mẽ, đánh thức mọi giác quan, là sự lựa chọn hoàn hảo cho những ai yêu thích vị cà phê nguyên bản.",
+                "Cà phê sữa": "Sự kết hợp hoàn hảo giữa vị đắng của cà phê phin truyền thống và vị ngọt béo của sữa đặc. Một ly cà phê sữa đá mát lạnh sẽ mang lại năng lượng hứng khởi cho ngày mới của bạn.",
+                "Cappuccino": "Một tách Cappuccino chuẩn Ý với lớp bọt sữa dày, mịn màng phủ lên trên lớp Espresso đậm đà. Hương thơm nhẹ nhàng, vị béo ngậy hòa quyện, tạo nên một trải nghiệm thưởng thức tinh tế.",
+                "Latte": "Latte của chúng tôi có tỷ lệ sữa nóng nhiều hơn, mang lại vị ngọt dịu và mềm mại. Phù hợp cho những ai yêu thích hương thơm cà phê nhưng không muốn vị quá đắng.",
+                "Trà đào": "Những miếng đào giòn ngọt kết hợp với nước cốt trà đen thơm lừng. Trà đào cam sả là thức uống giải nhiệt tuyệt vời cho những ngày nắng nóng.",
+                "Trà chanh": "Vị chua thanh của chanh tươi kết hợp với vị chát nhẹ của trà xanh, tạo nên thức uống sảng khoái, giúp giải tỏa căng thẳng và mệt mỏi.",
+                "Thịt bò nướng": "Thịt bò tươi ngon được tẩm ướp gia vị đặc biệt theo công thức riêng của nhà hàng, nướng trên lửa than hồng cho đến khi chín mềm, thơm lừng.",
+                "Bánh mật ong": "Chiếc bánh mềm mịn, thơm lừng mùi mật ong rừng tự nhiên. Vị ngọt thanh, không gắt, kết hợp hoàn hảo khi dùng chung với các loại trà nóng."
+            };
 
-            if(name) document.getElementById('prod-name').innerText = decodeURIComponent(name);
-            if(price) document.getElementById('prod-price').innerText = parseInt(price).toLocaleString() + ' VND';
-            if(img) {
-                document.getElementById('main-img').src = decodeURIComponent(img);
-                document.getElementById('main-img-link').href = decodeURIComponent(img);
+            // 2. LẤY THÔNG TIN TỪ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = decodeURIComponent(urlParams.get('name') || "Sản phẩm");
+            const price = parseInt(urlParams.get('price') || "0");
+            const img = decodeURIComponent(urlParams.get('img') || "images/menu-2.jpg");
+
+            // 3. HIỂN THỊ LÊN GIAO DIỆN
+            $('#prod-name').text(name);
+            $('#prod-price').text(price.toLocaleString() + " đ");
+            $('#prod-img').attr('src', img);
+            $('#prod-img-link').attr('href', img);
+
+            // Hiển thị mô tả tương ứng, nếu không có thì hiện mặc định
+            if (productDescriptions[name]) {
+                $('#prod-desc').text(productDescriptions[name]);
+            } else {
+                $('#prod-desc').text("Mô tả chi tiết cho " + name + " đang được cập nhật. Hãy thưởng thức để cảm nhận hương vị tuyệt vời này!");
             }
 
-            // Xử lý thêm vào giỏ hàng
-            document.getElementById('btn-add-cart').addEventListener('click', function(e) {
-                e.preventDefault();
-                const pName = document.getElementById('prod-name').innerText;
-                // Lấy số từ chuỗi giá (vd: "30,000 VND" -> 30000)
-                const pPrice = parseInt(document.getElementById('prod-price').innerText.replace(/\D/g,''));
-                const pQty = parseInt(document.getElementById('quantity').value);
+            // 4. XỬ LÝ TĂNG GIẢM SỐ LƯỢNG
+		    var quantitiy=0;
+		    $('.quantity-right-plus').click(function(e){
+		        e.preventDefault();
+		        var quantity = parseInt($('#quantity').val());
+		        $('#quantity').val(quantity + 1);
+		    });
 
-                // Gọi hàm addToCart nhiều lần theo số lượng (hoặc cập nhật cart.js để nhận số lượng)
-                for(let i = 0; i < pQty; i++) {
-                    addToCart(pName, pPrice);
+		    $('.quantity-left-minus').click(function(e){
+		        e.preventDefault();
+		        var quantity = parseInt($('#quantity').val());
+		        if(quantity>1){
+		            $('#quantity').val(quantity - 1);
+		        }
+		    });
+
+            // 5. XỬ LÝ NÚT THÊM VÀO GIỎ HÀNG
+            $('#btn-add-cart').click(function(e){
+                e.preventDefault();
+                var qty = parseInt($('#quantity').val());
+                
+                // Thêm n lần vào giỏ (hoặc cập nhật hàm addToCart để nhận số lượng)
+                // Ở đây dùng vòng lặp đơn giản để tương thích với hàm addToCart hiện tại của bạn
+                for(var i=0; i<qty; i++){
+                    addToCart(name, price);
                 }
-                // Thông báo thủ công vì addToCart có thông báo riêng nhưng chạy loop sẽ bị spam
-                // alert(`Đã thêm ${pQty} ${pName} vào giỏ hàng!`);
+                // Thông báo (tùy chỉnh lại nếu addToCart đã có alert)
             });
-        });
-    </script>
+		    
+		});
+	</script>
 </body>
 </html>
