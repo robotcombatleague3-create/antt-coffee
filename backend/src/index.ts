@@ -70,7 +70,7 @@ async function startServer() {
         
         if (connection) {
             console.log(`✅ Database connection successful! Target: ${dbConfig.database}`);
-            await connection.end(); // Đóng kết nối kiểm tra
+            await connection.release(); // Trả connection về pool
             
             // Khởi động Express Server
             app.listen(PORT, () => {
