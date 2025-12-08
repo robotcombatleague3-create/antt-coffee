@@ -3,17 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import connectFlash from 'connect-flash';
 import cors from 'cors';
-import path from 'path';
-import dotenv from 'dotenv';
-import { 
-    getListofProducts, 
-    saveProduct, 
-    upload, 
-    getVouchers, 
-    createVoucher, 
-    getOrders, 
-    updateOrderStatus 
-} from '../controllers/appController';
+import { getListofProducts } from '../controllers/appController';
 
 dotenv.config();
 
