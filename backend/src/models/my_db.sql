@@ -109,6 +109,16 @@ CREATE TABLE `ORDER` (
     -- Tạm bỏ FK Customer/Staff để dễ test nếu chưa tạo user
 );
 
+CREATE TABLE DETAIL (
+    Detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    Order_id INT NOT NULL,
+    Item_id INT NOT NULL,
+    Quantity INT DEFAULT 1,
+    Price DECIMAL(10,2) NOT NULL, -- Giá tại thời điểm mua
+    CONSTRAINT FK_Detail_Order FOREIGN KEY (Order_id) REFERENCES `ORDER`(Order_id),
+    CONSTRAINT FK_Detail_Item FOREIGN KEY (Item_id) REFERENCES ITEM(Item_id)
+);
+
 -- Dữ liệu mẫu Voucher
 INSERT INTO VOUCHER (Voucher_name, Voucher_code, Description, Value, Min_order_val, Quantity, Date_start, Date_end)
 VALUES ('Demo Voucher', 'TEST10', 'Type: amount', 10000, 50000, 100, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY));

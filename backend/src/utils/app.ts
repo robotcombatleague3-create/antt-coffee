@@ -2,8 +2,10 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import connectFlash from 'connect-flash';
+import dotenv from 'dotenv';
+import path from 'path';
 import cors from 'cors';
-import { getListofProducts } from '../controllers/appController';
+import * as appController from '../controllers/appController';
 
 dotenv.config();
 
@@ -17,10 +19,10 @@ app.use(cors({
             'http://localhost:5174',
             'http://127.0.0.1:5500', // Live Server mặc định
             'http://localhost:3000',
-
             'http://localhost', 
             'http://localhost/coffee1-gh-pages'
         ];
+        // Cho phép request không có origin (như Postman hoặc server-to-server)
         if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
             callback(null, true);
         } else {
@@ -40,7 +42,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Public folder đặc biệt cho ảnh upload (truy cập qua /images/tenanh.jpg)
-app.use('/images', express.static(path.join(__dirname, '../public/images')));
+app.use('/images', express.static(path.join(__dirname, '../../public/images')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
@@ -62,18 +64,23 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-// --- ROUTE API ---
+// --- ROUTE API (ĐÃ SỬA LỖI GỌI HÀM) ---
 
 // 1. Menu & Sản phẩm (Có upload)
-app.get('/api/menu', getListofProducts);
-app.post('/api/menu', upload.single('image'), saveProduct);
+// Sửa: Thêm appController. vào trước tên hàm
+app.get('/api/menu', appController.getListofProducts);
+app.post('/api/menu', appController.upload.single('image'), appController.saveProduct);
 
 // 2. Voucher
-app.get('/api/vouchers', getVouchers);
-app.post('/api/vouchers', createVoucher);
+app.get('/api/vouchers', appController.getVouchers);
+app.post('/api/vouchers', appController.createVoucher);
 
-// 3. Đơn hàng
-app.get('/api/orders', getOrders);
-app.put('/api/orders/:id', updateOrderStatus);
+// 3. Đơn hàng (Quản lý & Admin)
+app.get('/api/orders', appController.getOrders);
+app.put('/api/orders/:id', appController.updateOrderStatus);
+
+// 4. Đặt hàng & Lịch sử (User)
+app.post('/api/orders', appController.createOrder);          // Tạo đơn
+app.get('/api/orders/user/:userId', appController.getMyOrders); // Lịch sử đơn
 
 export default app;
