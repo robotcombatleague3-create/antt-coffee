@@ -3,7 +3,9 @@ import type { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import connectFlash from 'connect-flash';
 import cors from 'cors';
-import { getListofProducts } from '../controllers/appController';
+import dotenv from 'dotenv';
+import path from 'path';
+import { createVoucher, getListofProducts, getOrders, getProductById, getVouchers, saveProduct, updateOrderStatus, upload } from '../controllers/appController';
 
 dotenv.config();
 
@@ -18,7 +20,7 @@ app.use(cors({
             'http://127.0.0.1:5500', // Live Server mặc định
             'http://localhost:3000',
 
-            'http://localhost', 
+            'http://localhost',
             'http://localhost/coffee1-gh-pages'
         ];
         if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
@@ -39,6 +41,9 @@ app.use(express.json());
 // Public folder (cho file tĩnh thông thường)
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Serve frontend files
+app.use(express.static(path.join(__dirname, '../../../frontend')));
+
 // Public folder đặc biệt cho ảnh upload (truy cập qua /images/tenanh.jpg)
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
@@ -52,7 +57,7 @@ app.use(session({
     cookie: {
         secure: false, // Để false khi chạy localhost
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7 
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }));
 
@@ -64,9 +69,25 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // --- ROUTE API ---
 
+// Root endpoint
+app.get('/', (req: Request, res: Response) => {
+    res.json({
+        message: 'ANTT Coffee API Server',
+        version: '1.0.0',
+        endpoints: {
+            menu: '/api/menu',
+            product: '/api/product/:id',
+            vouchers: '/api/vouchers',
+            orders: '/api/orders'
+        }
+    });
+});
+
 // 1. Menu & Sản phẩm (Có upload)
 app.get('/api/menu', getListofProducts);
 app.post('/api/menu', upload.single('image'), saveProduct);
+
+app.get('/api/product/:id', getProductById);
 
 // 2. Voucher
 app.get('/api/vouchers', getVouchers);
