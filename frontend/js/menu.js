@@ -1,71 +1,99 @@
 class MenuManager {
     constructor() {
-        this.apiUrl = 'http://localhost:3000/api/menu'; // URL API Backend
+        this.apiUrl = 'http://localhost:3000/api/menu';
         this.init();
     }
 
     init() {
-        document.addEventListener('DOMContentLoaded', () => {
+        console.log('MenuManager.init, readyState =', document.readyState);
+
+        const run = () => {
+            console.log("MenuManager: Bắt đầu tải menu...");
             this.loadMenuFromAPI();
             this.checkLoginStatus();
-        });
-    }
+        };
 
-    // 1. Gọi API lấy dữ liệu món ăn
-    async loadMenuFromAPI() {
-        try {
-            const response = await fetch(this.apiUrl);
-            const res = await response.json();
-
-            if (res.success) {
-                this.renderMenu(res.data);
-            } else {
-                console.error("Lỗi lấy menu:", res.message);
-            }
-        } catch (error) {
-            console.error("Lỗi kết nối server:", error);
-            // Fallback: Nếu lỗi server thì không làm gì hoặc hiện thông báo
+        // Nếu DOM chưa load xong thì chờ DOMContentLoaded,
+        // còn nếu đã load rồi thì chạy luôn
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', run);
+        } else {
+            run();
         }
     }
 
-    // 2. Vẽ lại giao diện Menu
+    async loadMenuFromAPI() {
+        try {
+            const response = await fetch(this.apiUrl);
+            if (!response.ok) {
+            throw new Error('HTTP status ' + response.status);
+            }
+
+            const res = await response.json();
+            console.log("Raw response từ API /api/menu:", res);
+
+            // Nếu backend trả về mảng [ ... ]
+            if (Array.isArray(res)) {
+            this.renderMenu(res);
+            return;
+            }
+
+            // Nếu backend trả về { success, data }
+            if (res.success && Array.isArray(res.data)) {
+            this.renderMenu(res.data);
+            return;
+            }
+
+            // Các trường hợp khác
+            console.error("Định dạng JSON không đúng kỳ vọng:", res);
+        } catch (error) {
+            console.error("Lỗi kết nối hoặc parse JSON:", error);
+        }
+        }
+
     renderMenu(products) {
-        // Xóa nội dung cũ của các Tab
+        console.log('renderMenu được gọi với', products.length, 'sản phẩm');    
+
+        // Định nghĩa các vị trí Tab
         const containers = {
             'Cà phê': document.querySelector('#v-pills-0 .row'),
-            'Trà': document.querySelector('#v-pills-1 .row'), // Map với Cate_name trong DB
+            'Trà': document.querySelector('#v-pills-1 .row'),
             'Món ăn': document.querySelector('#v-pills-2 .row'),
             'Tráng miệng': document.querySelector('#v-pills-3 .row')
         };
 
-        // Reset container
+        // Xóa nội dung cũ
         for (let key in containers) {
-            if (containers[key]) containers[key].innerHTML = ''; 
+            if (containers[key]) containers[key].innerHTML = '';
         }
 
-        // Duyệt qua từng món và chèn vào đúng Tab
         products.forEach(p => {
-            // Xử lý ảnh: Nếu là đường dẫn tương đối thì thêm domain backend
+            // --- XỬ LÝ ẢNH QUAN TRỌNG ---
             let imgUrl = p.image || 'images/menu-1.jpg';
+            
+            // 1. Nếu là ảnh upload từ Admin (bắt đầu bằng /images/) -> Thêm domain backend
             if (imgUrl.startsWith('/')) {
                 imgUrl = 'http://localhost:3000' + imgUrl;
-            }
+            } 
+            // 2. Nếu là ảnh mẫu (bắt đầu bằng images/) -> Giữ nguyên để lấy từ frontend
+            // (Không cần sửa gì cả)
 
-            // Map Category từ DB sang Tab (Cần khớp tên trong Database)
+            // --- PHÂN LOẠI TAB ---
             let targetContainer = null;
-            const cateName = p.category ? p.category.toLowerCase() : '';
+            const c = p.category ? p.category.toLowerCase() : '';
 
-            if (cateName.includes('cà phê') || cateName.includes('coffee')) targetContainer = containers['Cà phê'];
-            else if (cateName.includes('trà') || cateName.includes('tea') || cateName.includes('nước')) targetContainer = containers['Trà'];
-            else if (cateName.includes('món') || cateName.includes('food') || cateName.includes('dish')) targetContainer = containers['Món ăn'];
-            else targetContainer = containers['Tráng miệng']; // Mặc định hoặc món khác
+            if (c.includes('cà phê') || c.includes('coffee')) targetContainer = containers['Cà phê'];
+            else if (c.includes('trà') || c.includes('nước') || c.includes('drink')) targetContainer = containers['Trà'];
+            else if (c.includes('món') || c.includes('dish') || c.includes('food')) targetContainer = containers['Món ăn'];
+            else targetContainer = containers['Tráng miệng'];
 
+            // --- VẼ HTML (ĐÃ XÓA ftco-animate ĐỂ TRÁNH LỖI TÀNG HÌNH) ---
             if (targetContainer) {
                 const html = `
-                <div class="col-md-6 col-lg-4 ftco-animate fadeInUp ftco-animated">
+                <div class="col-md-6 col-lg-4"> 
                     <div class="menu-entry">
                         <a href="detail.html?name=${encodeURIComponent(p.name)}&price=${p.price}&img=${encodeURIComponent(imgUrl)}" 
-                           class="img" style="background-image: url(${imgUrl});"></a>
+                           class="img" style="background-image: url('${imgUrl}');"></a>
                         <div class="text text-center pt-4">
                             <h3><a href="detail.html?name=${encodeURIComponent(p.name)}&price=${p.price}&img=${encodeURIComponent(imgUrl)}">${p.name}</a></h3>
                             <p class="price"><span>${parseFloat(p.price).toLocaleString()} đ</span></p>
@@ -81,34 +109,31 @@ class MenuManager {
                 targetContainer.insertAdjacentHTML('beforeend', html);
             }
         });
-
-        // Cập nhật lại trạng thái nút Add to Cart (ẩn/hiện theo login)
+        
+        // Gọi lại check login để hiện nút thêm giỏ hàng
         this.checkLoginStatus();
     }
 
     checkLoginStatus() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+        const btns = document.querySelectorAll('.btn-add-to-cart');
         const cartNav = document.getElementById('cartNav');
 
         if (currentUser) {
-            addToCartButtons.forEach(btn => btn.style.display = 'inline-block');
+            btns.forEach(b => b.style.display = 'inline-block');
             if(cartNav) cartNav.style.display = 'block';
-            this.updateCartCount(currentUser.username);
+            
+            const cartData = JSON.parse(localStorage.getItem('carts')) || {};
+            const userCart = cartData[currentUser.username] || [];
+            const total = userCart.reduce((sum, item) => sum + item.quantity, 0);
+            const countEl = document.getElementById('cartCount');
+            if(countEl) countEl.textContent = total;
         } else {
-            addToCartButtons.forEach(btn => btn.style.display = 'none');
+            // Nếu chưa login thì ẩn nút mua
+            btns.forEach(b => b.style.display = 'none');
             if(cartNav) cartNav.style.display = 'none';
         }
     }
-
-    updateCartCount(username) {
-        const cartData = JSON.parse(localStorage.getItem('carts')) || {};
-        const userCart = cartData[username] || [];
-        const totalItems = userCart.reduce((sum, item) => sum + item.quantity, 0);
-        const countEl = document.getElementById('cartCount');
-        if(countEl) countEl.textContent = totalItems;
-    }
 }
 
-// Khởi tạo
 const menuManager = new MenuManager();
