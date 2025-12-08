@@ -61,7 +61,7 @@
                 <div class="col-md-7 heading-section text-center ftco-animate">
                     <span class="subheading">Discover</span>
                     <h2 class="mb-4">Our Menu</h2>
-                    <p>Choose your favorite drinks from our carefully selected menu</p>
+                    <p>Chọn những thức uống yêu thích từ thực đơn được chọn lọc kỹ lưỡng của chúng tôi</p>
                 </div>
             </div>
 
@@ -72,7 +72,9 @@
                             <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist">
                                 <a class="nav-link active" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-selected="true">Coffee</a>
                                 <a class="nav-link" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-selected="false">Tea</a>
-                                <a class="nav-link" id="v-pills-3-tab" data-toggle="pill" href="#v-pills-3" role="tab" aria-selected="false">Juice/Smoothie</a>
+                                <a class="nav-link" id="v-pills-3-tab" data-toggle="pill" href="#v-pills-3" role="tab" aria-selected="false">Juice n Drinks</a>
+                                <a class="nav-link" id="v-pills-4-tab" data-toggle="pill" href="#v-pills-4" role="tab" aria-selected="false">Main Dish</a>
+                                <a class="nav-link" id="v-pills-5-tab" data-toggle="pill" href="#v-pills-5" role="tab" aria-selected="false">Dessert</a>
                             </div>
                         </div>
 
@@ -203,7 +205,92 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            
+                                <!-- Dish Menu -->
+                                <div class="tab-pane fade show active" id="v-pills-4" role="tabpanel">
+                                        <div class="row">
+                                            <!-- Thịt bò nướng -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dish-1.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Thịt bò nướng</a></h3>
+                                                        <p>Thịt bò nướng thơm ngon</p>
+                                                        <p class="price"><span>45k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Thịt bò nướng', 45000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Thịt sườn nướng -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dish-2.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Thịt sườn nướng</a></h3>
+                                                        <p>Thịt sườn nướng thơm ngon</p>
+                                                        <p class="price"><span>60k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Thịt sườn nướng', 60000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Bò nướng sốt -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dish-3.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Bò nướng sốt</a></h3>
+                                                        <p>Bò nướng sốt thơm ngon</p>
+                                                        <p class="price"><span>45k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Bò nướng sốt', 45000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dessert Menu -->
+                                    <div class="tab-pane fade show active" id="v-pills-5" role="tabpanel">
+                                        <div class="row">
+                                            <!-- Bánh mật ong -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dessert-1.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Bánh mật ong</a></h3>
+                                                        <p>Bánh mật ong thơm ngon</p>
+                                                        <p class="price"><span>35k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Bánh mật ong', 35000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Bánh hot cake mật ong -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dessert-2.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Bánh hot cake mật ong</a></h3>
+                                                        <p>Bánh hot cake mật ong thơm ngon</p>
+                                                        <p class="price"><span>35k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Bánh hot cake mật ong', 35000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Bánh mật ong hot cake -->
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(images/dessert-3.jpg);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">Bánh mật ong hot cake</a></h3>
+                                                        <p>Bánh mật ong hot cake thơm ngon</p>
+                                                        <p class="price"><span>35k</span></p>
+                                                        <p><a href="#" class="btn btn-primary btn-outline-primary btn-add-to-cart" onclick="addToCart('Bánh mật ong hot cake', 35000)" style="display: none;">Thêm vào giỏ</a></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>     
                         </div>
                     </div>
                 </div>
