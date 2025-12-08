@@ -1,133 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - ANTT Coffee</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Great+Vibes" rel="stylesheet">
-
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="css/animate.css">
-    
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
-
     <link rel="stylesheet" href="css/aos.css">
-
     <link rel="stylesheet" href="css/ionicons.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-
-    
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body { background-color: #1a1a1a; color: #fff; }
+        .admin-section { padding: 50px 0; }
+        .admin-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .admin-card h3 { color: #c49b63; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        
+        /* Form Styles */
+        .form-control {
+            background: rgba(0, 0, 0, 0.5) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: #fff !important;
+        }
+        .form-control:focus { border-color: #c49b63 !important; }
+        
+        /* Table Styles */
+        .table { color: #ccc; }
+        .table thead th { border-top: none; border-bottom: 2px solid #c49b63; color: #c49b63; }
+        .table td, .table th { border-top: 1px solid rgba(255,255,255,0.1); vertical-align: middle; }
+        .btn-action { margin-right: 5px; }
+        
+        .nav-link.admin-active { color: #c49b63 !important; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <!-- Navabr -->
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">ANTT<small>Coffee</small></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="oi oi-menu"></span> Menu
-        </button>
-        <div class="collapse navbar-collapse" id="ftco-nav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="menu.html" class="nav-link">Menu</a></li>
-                <li class="nav-item"><a href="voucher.html" class="nav-link">Voucher</a></li>
-                <li class="nav-item cart">
-                    <a href="cart.html" class="nav-link">
-                        <span class="icon icon-shopping_cart"></span>
-                        <span class="bag d-flex justify-content-center align-items-center">
-                            <small id="cartCount">0</small>
-                        </span>
-                    </a>
-                </li>
-                <li id="loginContainer" class="nav-item">
-                    <a href="login.html" class="nav-link">
-                        <span class="icon icon-user"></span> Login
-                    </a>
-                </li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">ANTT<small>Admin</small></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav">
+                <span class="oi oi-menu"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Xem Website</a></li>
+                    <li class="nav-item active"><a href="#" class="nav-link admin-active">Dashboard</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" onclick="logout()">Đăng Xuất</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-    <!-- END nav -->
+    </nav>
 
-    <section class="ftco-section"><div class="container">
-      <h2>Welcome Admin</h2>
+    <section class="ftco-section admin-section">
+        <div class="container">
+            <h2 class="mb-5 text-center">Quản Trị Hệ Thống</h2>
 
-      <h3 class="mt-4">Quản lý Menu</h3>
-      <form id="prodForm" class="mb-3">
-        <input type="hidden" name="pid">
-        <div class="form-row">
-          <div class="col"><input class="form-control" name="name" placeholder="Tên"></div>
-          <div class="col"><input class="form-control" name="price" type="number" placeholder="Giá (đ)"></div>
-          <div class="col"><input class="form-control" name="img" placeholder="Ảnh (URL)"></div>
-          <div class="col d-flex align-items-center"><label class="ml-2"><input type="checkbox" name="active" checked> Bán</label></div>
-          <div class="col"><button class="btn btn-dark btn-block" type="submit">Lưu</button></div>
+            <div class="admin-card">
+                <h3><span class="icon-coffee"></span> Quản Lý Menu</h3>
+                <form id="prodForm" class="mb-4" enctype="multipart/form-data">
+                    <input type="hidden" name="pid"> <div class="form-row">
+                        <div class="col-md-3 mb-2">
+                            <input class="form-control" name="name" placeholder="Tên món" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <input class="form-control" name="price" type="number" placeholder="Giá (VNĐ)" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="image">
+                                <label class="custom-file-label bg-dark text-white border-secondary" for="customFile">Chọn ảnh...</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mb-2 d-flex align-items-center justify-content-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="activeCheck" name="active" checked>
+                                <label class="custom-control-label" for="activeCheck">Bán</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-primary btn-block" type="submit">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>ID</th><th>Ảnh</th><th>Tên Món</th><th>Giá</th><th>Trạng Thái</th><th>Thao Tác</th></tr></thead>
+                        <tbody id="adminMenuBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3><span class="icon-shopping_cart"></span> Quản Lý Đơn Hàng</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>Mã Đơn</th><th>Khách Hàng</th><th>Tổng Tiền</th><th>Ngày Đặt</th><th>Trạng Thái</th><th>Cập Nhật</th></tr></thead>
+                        <tbody id="adminOrderBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3><span class="icon-gift"></span> Tạo Ưu Đãi</h3>
+                <form id="voucherForm" class="mb-4">
+                    <div class="form-row">
+                        <div class="col-md-3 mb-2">
+                            <input class="form-control" name="code" placeholder="Mã Voucher (VD: TET2025)" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <select class="form-control" name="type">
+                                <option value="percent">Giảm %</option>
+                                <option value="amount">Trừ tiền (VNĐ)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <input class="form-control" name="value" type="number" placeholder="Giá trị giảm" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <input class="form-control" name="min" type="number" placeholder="Đơn tối thiểu">
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button class="btn btn-primary btn-block" type="submit">Tạo Mã</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>Mã</th><th>Loại</th><th>Giá Trị</th><th>Đơn Tối Thiểu</th><th>Trạng Thái</th></tr></thead>
+                        <tbody id="adminVoucherBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-      </form>
-      <table class="table table-sm"><thead><tr><th>ID</th><th>Tên</th><th>Giá</th><th>Active</th><th></th></tr></thead><tbody id="adminMenuBody"></tbody></table>
+    </section>
 
-      <h3 class="mt-4">Quản lý Đơn hàng</h3>
-      <table class="table table-sm"><thead><tr><th>Mã</th><th>User</th><th>Tổng</th><th>Trạng thái</th><th>Cập nhật</th></tr></thead><tbody id="adminOrderBody"></tbody></table>
-
-      <h3 class="mt-4">Tạo ưu đãi</h3>
-      <form id="voucherForm" class="mb-2">
-        <div class="form-row">
-          <div class="col"><input class="form-control" name="code" placeholder="Mã"></div>
-          <div class="col"><select class="form-control" name="type"><option value="percent">% phần trăm</option><option value="amount">Trừ tiền (đ)</option></select></div>
-          <div class="col"><input class="form-control" name="value" type="number" placeholder="Giá trị"></div>
-          <div class="col"><input class="form-control" name="min" type="number" placeholder="Đơn tối thiểu"></div>
-          <div class="col"><button class="btn btn-dark btn-block" type="submit">Tạo</button></div>
-        </div>
-      </form>
-      <table class="table table-sm"><thead><tr><th>Mã</th><th>Loại</th><th>Giá trị</th><th>Tối thiểu</th><th>Active</th></tr></thead><tbody id="adminVoucherBody"></tbody></table>
-    </div></section>
-
-  
-
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
-  <script src="js/jquery.min.js"></script>
-  <script src="js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/jquery.waypoints.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/jquery.animateNumber.min.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script>
-  <script src="js/jquery.timepicker.min.js"></script>
-  <script src="js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="js/google-map.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/admin-ui.js"></script>
-  <script src="js/nav.js"></script>
-
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.timepicker.min.js"></script>
+    <script src="js/scrollax.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/admin-ui.js"></script>
 
     <script>
         // Kiểm tra quyền admin
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUser || currentUser.role !== 'admin') {
-                window.location.href = '../index.html';
+                alert("Bạn không có quyền truy cập trang này!");
+                window.location.href = 'login.html';
             }
+        });
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+        
+        // Hiển thị tên file khi upload
+        $(".custom-file-input").on("change", function() {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
     </script>
 </body>
