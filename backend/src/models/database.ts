@@ -1,21 +1,25 @@
-/**
- * Database Connection Module
- * 
- * Manages MySQL database connections using mysql2/promise.
- * Provides a connection factory function for database operations.
- * 
- * @module models/database
- */
-
 import mysql from 'mysql2/promise';
-import { dbConfig } from '../utils/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Tạo Connection Pool thay vì connection đơn lẻ để hiệu năng tốt hơn
+export const pool = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'coffee_shop',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 export async function getDbConnection() {
     try {
-        const conn = await mysql.createConnection(dbConfig);
-        return conn;
+        return await pool.getConnection();
     } catch (err) {
-        console.error('Database connection error:', err);
+        console.error('❌ Database connection failed:', err);
         return null;
     }
 }
