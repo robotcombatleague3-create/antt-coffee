@@ -69,6 +69,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // --- ROUTE API (ĐÃ SỬA LỖI GỌI HÀM) ---
 
+// 0. Đăng ký & Đăng nhập & Đăng xuất
+app.post('/api/register', appController.register);
+app.post('/api/login', appController.login);
+app.post('/api/logout', appController.logout);
+
 // 1. Menu & Sản phẩm (Có upload)
 // Sửa: Thêm appController. vào trước tên hàm
 app.get('/api/menu', appController.getListofProducts);

@@ -1,7 +1,9 @@
+const API_URL = 'http://localhost:3000/api'; 
+
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
 
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const username = document.getElementById('username').value.trim();
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
-        // Reset errors
+        // Reset thông báo lỗi cũ
         document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 
         let isValid = true;
@@ -30,29 +32,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isValid) {
-            // Logic đăng ký giả lập (Mock)
-            // Lấy danh sách users từ localStorage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        email: email
+                    })
+                });
 
-            // Kiểm tra trùng username
-            if (users.some(u => u.username === username)) {
-                document.getElementById('usernameError').textContent = 'Tên đăng nhập đã tồn tại';
-                return;
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Đăng ký thành công! Bạn có thể đăng nhập ngay.');
+                    window.location.href = 'login.html';
+                } else {
+                    if (data.message.includes('tồn tại')) {
+                        document.getElementById('usernameError').textContent = data.message;
+                    } else {
+                        alert('Lỗi đăng ký: ' + data.message);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Không thể kết nối đến Server. Vui lòng kiểm tra lại Backend.');
             }
-
-            // Tạo user mới
-            const newUser = {
-                username: username,
-                email: email,
-                password: password,
-                role: 'customer' // Mặc định là khách hàng
-            };
-
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-
-            alert('Đăng ký thành công! Vui lòng đăng nhập.');
-            window.location.href = 'login.html';
         }
     });
 });

@@ -302,44 +302,46 @@ function updateLoginStatus() {
     const cartNav = document.getElementById('cartNav');
     const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
 
-    if (currentUser) {
-        // Người dùng đã đăng nhập
-        loginContainer.innerHTML = `
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                    ${currentUser.username}
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+    if (loginContainer) { 
+        if (currentUser) {
+            // Người dùng đã đăng nhập
+            loginContainer.innerHTML = `
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                        ${currentUser.username}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                    </div>
                 </div>
-            </div>
-        `;
-        
-        // Hiển thị giỏ hàng
-        cartNav.style.display = 'block';
-        
-        // Hiển thị số lượng trong giỏ hàng của user hiện tại
-        updateCartCount(currentUser.username);
-        
-        // Enable các nút Add to Cart
-        addToCartButtons.forEach(button => {
-            button.style.display = 'inline-block';
-        });
-    } else {
-        // Chưa đăng nhập
-        loginContainer.innerHTML = `
-            <a href="login.html" class="nav-link">
-                <span class="icon icon-user"></span> Login
-            </a>
-        `;
-        
-        // Ẩn giỏ hàng
-        cartNav.style.display = 'none';
-        
-        // Disable các nút Add to Cart
-        addToCartButtons.forEach(button => {
-            button.style.display = 'none';
-        });
+            `;
+            
+            // Hiển thị giỏ hàng
+            cartNav.style.display = 'block';
+            
+            // Hiển thị số lượng trong giỏ hàng của user hiện tại
+            updateCartCount(currentUser.username);
+            
+            // Enable các nút Add to Cart
+            addToCartButtons.forEach(button => {
+                button.style.display = 'inline-block';
+            });
+        } else {
+            // Chưa đăng nhập
+            loginContainer.innerHTML = `
+                <a href="login.html" class="nav-link">
+                    <span class="icon icon-user"></span> Login
+                </a>
+            `;
+            
+            // Ẩn giỏ hàng
+            cartNav.style.display = 'none';
+            
+            // Disable các nút Add to Cart
+            addToCartButtons.forEach(button => {
+                button.style.display = 'none';
+            });
+        }
     }
 }
 
