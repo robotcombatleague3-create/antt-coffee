@@ -33,7 +33,13 @@ class AuthManager {
 
             if (data.success) {
                 localStorage.setItem('currentUser', JSON.stringify(data.user));
-                window.location.href = data.user.role === 'admin' ? 'admin/dashboard.html' : 'index.html';
+                const userRole = data.user.role;
+                console.log("Vai trò người dùng:", userRole);
+                if (userRole === 'Admin') { 
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'index.html'; 
+                }
             }
         } catch (error) {
             this.showError('Login failed. Please try again.');

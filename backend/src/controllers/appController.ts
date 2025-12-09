@@ -36,6 +36,8 @@ export const register = async (req: Request, res: Response) => {
         // 2. HASH MẬT KHẨU (Khắc phục vấn đề bảo mật)
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        bcrypt.hash('admin123', salt).then(h => console.log(h));
+
 
         // 3. Chèn user mới
         const defaultRole = 'Customer'; 

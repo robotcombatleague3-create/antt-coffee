@@ -178,7 +178,7 @@
         // Kiểm tra quyền admin
         document.addEventListener('DOMContentLoaded', () => {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (!currentUser || currentUser.role !== 'admin') {
+            if (!currentUser || currentUser.role !== 'Admin') {
                 alert("Bạn không có quyền truy cập trang này!");
                 window.location.href = 'login.html';
             }

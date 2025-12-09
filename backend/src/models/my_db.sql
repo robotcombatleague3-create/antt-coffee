@@ -139,3 +139,21 @@ INSERT INTO ITEM (Item_name, Description, Image, Cate_id, Price) VALUES
 ('Tiramisu', 'Bánh ngọt tráng miệng vị cà phê và ca cao nổi tiếng của Ý', 'images/dessert-2.jpg', 4, 45000),
 ('Mousse Chanh Dây', 'Vị chua ngọt nhẹ nhàng, cốt bánh mềm tan trong miệng', 'images/dessert-3.jpg', 4, 39000),
 ('Cheesecake Dâu', 'Bánh phô mai béo ngậy kết hợp sốt dâu tây tươi', 'images/dessert-4.jpg', 4, 42000);
+
+-- --- 5. TÀI KHOẢN ADMIN ---
+INSERT INTO ACCOUNT (Username, Email, Password, Role) 
+VALUES (
+    'admin', 
+    'admin@local.coffee', 
+    '$2b$10$t3HjLOl/zxpZOemOrMppDODZVoZcMHrGS1.Cj0c038xqLHzlvd83W', 
+    'Admin'
+);
+
+-- --- 6. TÀI KHOẢN USER ---
+INSERT INTO ACCOUNT (Username, Email, Password, Role) 
+VALUES (
+    'user', 
+    'user@local.coffee', 
+    '$2b$10$lYEcknGIuSS0h8c/sYQeS.Wn/2K/d4kRK1rVJ5RFw1eUxyata0nF2', 
+    'Customer'
+);
