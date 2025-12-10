@@ -178,10 +178,22 @@
                 <div class="tab-pane fade admin-panel" id="panel-customer" role="tabpanel">
                     <div class="panel-header">
                         <h3 class="panel-title">Quản Lý Khách Hàng</h3>
+                        <button class="btn btn-outline-warning btn-sm" onclick="renderAdminCustomer()"><span class="icon-refresh"></span>Làm mới</button>
                     </div>
-                    <div class="alert alert-dark text-center">
-                        <span class="icon-info-circle mr-2"></span>
-                        Chức năng quản lý thành viên và điểm tích lũy đang được phát triển.
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thread>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Họ Tên</th>
+                                    <th>Liên Hệ</th>
+                                    <th>Cấp Độ</th>
+                                    <th>Điểm Tích Lũy</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thread>
+                            <tbody id="adminCustomerBody"></tbody>
+                        </table>
                     </div>
                 </div>
 

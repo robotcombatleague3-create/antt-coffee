@@ -78,6 +78,7 @@ app.post('/api/logout', appController.logout);
 // Sửa: Thêm appController. vào trước tên hàm
 app.get('/api/menu', appController.getListofProducts);
 app.post('/api/menu', appController.upload.single('image'), appController.saveProduct);
+app.delete('/api/menu/:id', appController.deleteProduct);
 
 // 2. Voucher
 app.get('/api/vouchers', appController.getVouchers);
@@ -90,5 +91,9 @@ app.put('/api/orders/:id', appController.updateOrderStatus);
 // 4. Đặt hàng & Lịch sử (User)
 app.post('/api/orders', appController.createOrder);          // Tạo đơn
 app.get('/api/orders/user/:userId', appController.getMyOrders); // Lịch sử đơn
+
+// 5. Khách hàng (Quản lý & Admin)
+app.get('/api/customers/', appController.getCustomers);
+app.post('/api/customers/:id/points', appController.updateCustomerPoints);
 
 export default app;

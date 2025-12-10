@@ -209,6 +209,37 @@ export const getProductById = async (req: Request, res: Response) => {
     } finally {
         await conn.release()
     }
+};
+
+export const deleteProduct = async (req:Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing product ID"
+        });
+    }
+
+    const conn = await getDbConnection();
+    if (!conn) {
+        return res.status(400).json({
+            success: false,
+            message: "Database connection error"
+        });
+    }
+
+    try {
+        await conn.execute('DELETE FROM ITEM WHERE Item_id = ?', [id]);
+        res.json({ success: true, message: "Đã xóa món ăn thành công!" });
+    } catch (error: any) {
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+            return res.status(400).json({ success: false, message: "Không thể xóa: Món này đã có trong lịch sử đơn hàng!" });
+        }
+        res.status(500).json({ success: false, message: "Lỗi server khi xóa món." });
+    } finally {
+        conn.release();
+    }
 }
 
 // --- QUẢN LÝ VOUCHER (MySQL Syntax) ---
@@ -383,3 +414,51 @@ export const getMyOrders = async (req: Request, res: Response) => {
         conn.release();
     }
 };
+
+// --- QUẢN LÝ KHÁCH HÀNG ---
+export const getCustomers = async (req: Request, res: Response) => {
+    const conn = await getDbConnection();
+    if (!conn) {
+        return res.status(400).json({
+            success: false,
+            message: "Database connection error"
+        });
+    }
+
+    try {
+        const sql = `
+            SELECT c.Cus_id, c.F_name, c.L_name, c.Phone, c.Points, c.Level, a.Email, a.Username
+            FROM CUSTOMER c
+            LEFT JOIN ACCOUNT a ON c.Acc_id = a.Acc_id
+            ORDER BY c.Points DESC;
+        `;
+        const [rows] = await conn.execute(sql);
+        res.json({ success: true, data: rows });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Lỗi server khi lấy danh sách khách hàng." });
+    } finally {
+        conn.release();
+    }
+};
+
+export const updateCustomerPoints = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { points } = req.body;
+
+    const conn = await getDbConnection();
+    if (!conn) {
+        return res.status(400).json({
+            success: false,
+            message: "Database connection error"
+        });
+    }
+
+    try {
+        await conn.execute('UPDATE CUSTOMER SET Points = ? WHERE Cus_id = ?', [points, id]);
+        res.json({ success: true, message: "Cập nhật điểm thành công!" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Lỗi server khi cập nhật điểm." });
+    } finally {
+        conn.release();
+    }
+}

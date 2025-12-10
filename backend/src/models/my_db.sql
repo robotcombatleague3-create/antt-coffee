@@ -48,7 +48,7 @@ CREATE TABLE CATEGORY (
     Cate_name       VARCHAR(100)            NOT NULL UNIQUE
 );
 -- Nạp dữ liệu mẫu cho Category ngay
-INSERT INTO CATEGORY (Cate_name) VALUES ('Cà phê'), ('Trà & Nước'), ('Đá xay'), ('Tráng Miệng');
+INSERT INTO CATEGORY (Cate_name) VALUES ('Cà phê'), ('Trà & Nước'), ('Đá xay'), ('Bánh');
 
 -- 5. ITEM (Sản phẩm)
 CREATE TABLE ITEM (
@@ -56,19 +56,10 @@ CREATE TABLE ITEM (
     Item_name       VARCHAR(100)            NOT NULL,
     Description     VARCHAR(500),
     Image           VARCHAR(255),
+    Is_active       BIT                     DEFAULT 1,
     Cate_id         INT                     NOT NULL,
     Price           DECIMAL(10,2)           DEFAULT 0,
     CONSTRAINT CK_Cate_id FOREIGN KEY (Cate_id) REFERENCES CATEGORY(Cate_id)
-);
-
--- 6. MENU & CONTAIN (Giữ cấu trúc nhưng đơn giản hóa cho MySQL)
-CREATE TABLE MENU (
-    Menu_id         INT AUTO_INCREMENT      PRIMARY KEY,
-    Menu_name       VARCHAR(100)            NOT NULL,
-    Time_start      TIME                    NOT NULL,
-    Time_end        TIME                    NOT NULL,
-    Active          BIT                     DEFAULT 1,
-    Staff_id        INT                     NOT NULL
 );
 
 -- 7. VOUCHER

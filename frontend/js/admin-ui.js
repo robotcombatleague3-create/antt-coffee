@@ -30,7 +30,8 @@ function renderAdminMenu() {
                     <td>${parseFloat(p.price).toLocaleString()} đ</td>
                     <td><span class="badge badge-success">Active</span></td>
                     <td>
-                        <button class="btn btn-sm btn-info" onclick='fillP(${JSON.stringify(p)})'>Sửa</button>
+                        <button class="btn btn-sm btn-info rm-1" onclick='fillP(${JSON.stringify(p)})'>Sửa</button>
+                        <button class="btn btn-sm btn-danger" onclick='deleteProduct(${p.id})'>Xóa</button>
                     </td>
                 </tr>`;
             }).join('');
@@ -178,6 +179,64 @@ window.saveOrderStatus = function(id) {
         },
         error: function() { alert('Không thể kết nối Server'); }
     });
+}
+
+window.deleteProduct = function(id) {
+    if (!confirm('Bạn có chắc chắn muốn xóa món này không?')) return;
+
+    $.ajax({
+        url: `${API_URL}/menu/${id}`,
+        type: 'DELETE',
+        success: function(res) { 
+            if (res.success) {
+                alert(res.message);
+                renderAdminMenu();
+            } else {
+                alert("Lỗi: " + res.message);
+            }
+        },
+        error: function(xhr) {
+            const msg = xhr.responseJSON ? xhr.responseJSON.message : 'Lỗi kết nối server';
+            alert(msg);
+        }
+    });
+};
+
+function renderAdminCustomers() {
+    $.get(`${API_URL}/customers`, function(res) {
+        if (res.success) {
+            const tbody = document.getElementById('adminCustomerBody');
+            tbody.innerHTML = res.data.map(c => {
+                let badgeColor = 'secondary';
+                if (c.Level === 'Silver') badgeColor = 'info';
+                else if (c.Level === 'Gold') badgeColor = 'warning';
+                else if (c.Level === 'Diamond') badgeColor = 'danger';
+
+                return `
+                <tr>
+                    <td>#${c.Cus_id}</td>
+                    <td>
+                        <strong>${c.F_name} ${c.L_name}</strong>
+                    </td>
+                    <td>
+                        <span class="d-block"><i class="icon-phone"></i> ${c.Phone}</span>
+                        <small class="text-muted">${c.Email || 'Chưa có email'}</small>
+                    </td>
+                    <td><span class="badge badge-${badgeColor}">${c.Level}</span></td>
+                    <td><strong>${c.Points}</strong> điểm</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editPoints(${c.Cus_id}, ${c.Points})">
+                            Sửa điểm
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+    }).fail(err => console.error("Lỗi tải khách hàng:", err));
+};
+
+window.editPoints = function(id, currentPoints) {
+    const newPoints = prompt()
 }
 
 document.addEventListener('DOMContentLoaded', () => {
