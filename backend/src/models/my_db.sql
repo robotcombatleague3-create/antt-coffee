@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS `ORDER`;
 DROP TABLE IF EXISTS `VOUCHER`;
 DROP TABLE IF EXISTS `CONTAIN`;
 DROP TABLE IF EXISTS `ITEM`;
-DROP TABLE IF EXISTS `MENU`;
 DROP TABLE IF EXISTS `CATEGORY`;
 DROP TABLE IF EXISTS `STAFF`;
 DROP TABLE IF EXISTS `CUSTOMER`;
@@ -15,11 +14,12 @@ DROP TABLE IF EXISTS `ACCOUNT`;
 
 -- 1. ACCOUNT
 CREATE TABLE ACCOUNT (
-    Acc_id INT AUTO_INCREMENT PRIMARY KEY,
-    Email VARCHAR(100) NOT NULL UNIQUE,
-    Username VARCHAR(50) NOT NULL UNIQUE,
-    Password VARCHAR(255) NOT NULL,
-    Join_date DATETIME DEFAULT CURRENT_TIMESTAMP
+    Acc_id          INT AUTO_INCREMENT      PRIMARY KEY,
+    Email           VARCHAR(100)            NOT NULL UNIQUE,
+    Username        VARCHAR(50)             NOT NULL UNIQUE,
+    Password        VARCHAR(255)            NOT NULL,
+    Role            ENUM('Admin', 'Customer') DEFAULT 'Customer',
+    Join_date       DATETIME                DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 2. CUSTOMER
@@ -56,7 +56,7 @@ CREATE TABLE CATEGORY (
     Cate_name VARCHAR(100) NOT NULL UNIQUE
 );
 -- Nạp dữ liệu mẫu cho Category ngay
-INSERT INTO CATEGORY (Cate_name) VALUES ('Cà phê'), ('Trà'), ('Đá xay');
+INSERT INTO CATEGORY (Cate_name) VALUES ('Cà phê'), ('Trà'), ('Đá xay'), ('Bánh');
 
 -- 5. ITEM (Sản phẩm)
 CREATE TABLE ITEM (
@@ -64,19 +64,10 @@ CREATE TABLE ITEM (
     Item_name VARCHAR(100) NOT NULL,
     Description VARCHAR(500),
     Image VARCHAR(255),
+    Is_active BIT DEFAULT 1,
     Cate_id INT NOT NULL,
     Price DECIMAL(10,2) DEFAULT 0,
     CONSTRAINT CK_Cate_id FOREIGN KEY (Cate_id) REFERENCES CATEGORY(Cate_id)
-);
-
--- 6. MENU & CONTAIN (Giữ cấu trúc nhưng đơn giản hóa cho MySQL)
-CREATE TABLE MENU (
-    Menu_id INT AUTO_INCREMENT PRIMARY KEY,
-    Menu_name VARCHAR(100) NOT NULL,
-    Time_start TIME NOT NULL,
-    Time_end TIME NOT NULL,
-    Active BIT DEFAULT 1,
-    Staff_id INT NOT NULL
 );
 
 -- 7. VOUCHER
@@ -110,11 +101,11 @@ CREATE TABLE `ORDER` (
 );
 
 CREATE TABLE DETAIL (
-    Detail_id INT AUTO_INCREMENT PRIMARY KEY,
-    Order_id INT NOT NULL,
-    Item_id INT NOT NULL,
-    Quantity INT DEFAULT 1,
-    Price DECIMAL(10,2) NOT NULL, -- Giá tại thời điểm mua
+    Detail_id       INT AUTO_INCREMENT      PRIMARY KEY,
+    Order_id        INT                     NOT NULL,
+    Item_id         INT                     NOT NULL,
+    Quantity        INT                     DEFAULT 1,
+    Price           DECIMAL(10,2)           NOT NULL, -- Giá tại thời điểm mua
     CONSTRAINT FK_Detail_Order FOREIGN KEY (Order_id) REFERENCES `ORDER`(Order_id),
     CONSTRAINT FK_Detail_Item FOREIGN KEY (Item_id) REFERENCES ITEM(Item_id)
 );
@@ -122,3 +113,46 @@ CREATE TABLE DETAIL (
 -- Dữ liệu mẫu Voucher
 INSERT INTO VOUCHER (Voucher_name, Voucher_code, Description, Value, Min_order_val, Quantity, Date_start, Date_end)
 VALUES ('Demo Voucher', 'TEST10', 'Type: amount', 10000, 50000, 100, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY));
+
+-- Insert món ăn vào ITEM
+INSERT INTO ITEM (Item_name, Description, Image, Cate_id, Price) VALUES 
+-- --- 1. NHÓM CÀ PHÊ (Cate_id = 1) ---
+('Cà phê Đen Đá', 'Hương vị cà phê Robusta đậm đà, đánh thức mọi giác quan', 'images/menu-1.jpg', 1, 25000),
+('Cà phê Sữa Đá', 'Sự hòa quyện tuyệt vời giữa vị đắng cà phê và vị ngọt của sữa', 'images/menu-2.jpg', 1, 29000),
+('Bạc Xỉu', 'Nhiều sữa, ít cà phê, béo ngậy và thơm lừng', 'images/coffee-1.jpg', 1, 32000),
+('Cappuccino', 'Cà phê Ý đẳng cấp với lớp bọt sữa bồng bềnh', 'images/coffee-2.jpeg', 1, 45000),
+
+-- --- 2. NHÓM TRÀ & NƯỚC (Cate_id = 2) ---
+('Trà Đào Cam Sả', 'Thức uống thanh mát, giải nhiệt với đào miếng giòn tan', 'images/menu-3.jpg', 2, 39000),
+('Trà Vải Hoa Hồng', 'Hương thơm hoa hồng tinh tế kết hợp vải thiều mọng nước', 'images/drink-1.jpg', 2, 39000),
+('Trà Sen Vàng', 'Vị trà Oolong đậm đà kết hợp hạt sen bùi bùi và kem béo', 'images/drink-2.jpg', 2, 42000),
+('Nước Ép Cam', 'Cam tươi nguyên chất, bổ sung Vitamin C', 'images/drink-3.jpg', 2, 35000),
+
+-- --- 3. NHÓM ĐÁ XAY (Cate_id = 3) ---
+('Matcha Đá Xay', 'Bột Matcha Nhật Bản xay nhuyễn cùng sữa tươi và kem whipping', 'images/drink-4.jpg', 3, 49000),
+('Chocolate Cookie', 'Đá xay sô cô la đậm vị kết hợp vụn bánh quy giòn tan', 'images/drink-5.jpg', 3, 52000),
+('Caramel Freeze', 'Vị caramel ngọt ngào quyện cùng cà phê đá xay mát lạnh', 'images/drink-6.jpg', 3, 49000),
+
+-- --- 4. NHÓM BÁNH (Cate_id = 4) ---
+('Bánh Croissant', 'Bánh sừng trâu ngàn lớp, vỏ giòn ruột mềm thơm mùi bơ', 'images/dessert-1.jpg', 4, 30000),
+('Tiramisu', 'Bánh ngọt tráng miệng vị cà phê và ca cao nổi tiếng của Ý', 'images/dessert-2.jpg', 4, 45000),
+('Mousse Chanh Dây', 'Vị chua ngọt nhẹ nhàng, cốt bánh mềm tan trong miệng', 'images/dessert-3.jpg', 4, 39000),
+('Cheesecake Dâu', 'Bánh phô mai béo ngậy kết hợp sốt dâu tây tươi', 'images/dessert-4.jpg', 4, 42000);
+
+-- --- 5. TÀI KHOẢN ADMIN ---
+INSERT INTO ACCOUNT (Username, Email, Password, Role) 
+VALUES (
+    'admin', 
+    'admin@local.coffee', 
+    '$2b$10$t3HjLOl/zxpZOemOrMppDODZVoZcMHrGS1.Cj0c038xqLHzlvd83W', 
+    'Admin'
+);
+
+-- --- 6. TÀI KHOẢN USER ---
+INSERT INTO ACCOUNT (Username, Email, Password, Role) 
+VALUES (
+    'user', 
+    'user@local.coffee', 
+    '$2b$10$lYEcknGIuSS0h8c/sYQeS.Wn/2K/d4kRK1rVJ5RFw1eUxyata0nF2', 
+    'Customer'
+);

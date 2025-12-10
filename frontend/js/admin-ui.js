@@ -4,8 +4,7 @@ const API_URL = 'http://localhost:3000/api';
 // --- 1. BẢO VỆ TRANG ADMIN ---
 function guardAdmin() {
     const u = JSON.parse(localStorage.getItem('currentUser'));
-    // Tạm thời check role đơn giản ở frontend
-    if (!u || u.role !== 'admin') {
+    if (!u || u.role !== 'Admin') {
         alert('Truy cập bị từ chối! Vui lòng đăng nhập quyền Admin.');
         window.location.href = 'login.html';
     }

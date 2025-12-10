@@ -3,6 +3,7 @@ import { getDbConnection } from '../models/database';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import bcrypt from 'bcryptjs';
 
 // --- CẤU HÌNH UPLOAD (Giữ nguyên) ---
 const uploadDir = path.join(__dirname, '../../public/images');
@@ -13,6 +14,92 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '-'))
 });
 export const upload = multer({ storage: storage });
+
+// --- ĐĂNG NHẬP ---
+export const register = async (req: Request, res: Response) => {
+    const conn = await getDbConnection();
+    if(!conn) return res.status(500).json({ success: false, message: "DB Error"});
+
+    try {
+        const { username, password, email } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).json({ success: false, message: "Thiếu tên đăng nhập hoặc mật khẩu." });
+        }
+
+        // 1. Kiểm tra user đã tồn tại
+        const [existingUser]: any = await conn.execute('SELECT Acc_id FROM ACCOUNT WHERE Username = ?', [username]);
+        if (existingUser.length > 0) {
+            return res.status(400).json({ success: false, message: "Tên đăng nhập đã tồn tại." });
+        }
+
+        // 2. HASH MẬT KHẨU (Khắc phục vấn đề bảo mật)
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        bcrypt.hash('admin123', salt).then(h => console.log(h));
+
+
+        // 3. Chèn user mới
+        const defaultRole = 'Customer'; 
+        await conn.execute(
+            'INSERT INTO ACCOUNT (Username, Password, Email, Role) VALUES (?, ?, ?, ?)',
+            [username, hashedPassword, email || null, defaultRole]
+        );
+
+        res.json({ success: true, message: "Đăng ký thành công" });
+    } catch (error) {
+        console.error("Lỗi đăng ký: ", error);
+        res.status(500).json({ success: false, message: "Lỗi server nội bộ." });
+    } finally {
+        conn.release();
+    }
+};
+
+export const login = async (req: Request, res: Response) => {
+    const conn = await getDbConnection();
+    if (!conn) return res.status(500).json({ success: false, message: "DB Error" });
+    
+    try {
+        const { username, password } = req.body;
+
+        // 1. Tìm user bằng username (chỉ lấy hash password từ DB)
+        const [users]: any = await conn.execute(
+            'SELECT Acc_id, Username, Password, Role FROM ACCOUNT WHERE Username = ?', 
+            [username]
+        );
+
+        const user = users[0];
+        if (!user) return res.status(401).json({ success: false, message: "Tên đăng nhập hoặc mật khẩu không đúng."});
+
+        // 2. SO SÁNH MẬT KHẨU: So sánh mật khẩu trần (password) với mật khẩu hash (user.Password)
+        const isMatch = await bcrypt.compare(password, user.Password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "Tên đăng nhập hoặc mật khẩu không đúng." });
+        }
+
+        // 3. Đăng nhập thành công, lưu thông tin vào Session
+        res.json({ 
+            success: true, 
+            user: { id: user.Acc_id, username: user.Username, role: user.Role } 
+        });
+
+    } catch (error) {
+        console.error("Lỗi đăng nhập:", error);
+        res.status(500).json({ success: false, message: "Lỗi server nội bộ."});
+    } finally {
+        conn.release();
+    }
+};
+
+export const logout = (req: Request, res: Response) => {
+    (req.session as any).destroy((error: any) => {
+        if (error) {
+            console.error("Lỗi logout:", error);
+            return res.status(500).json({ success: false, message: "Lỗi server nội bộ."})
+        }
+        res.json({ success: true, message: "Đăng xuất thành công." })
+    });
+};
 
 // --- QUẢN LÝ MENU (MySQL Syntax) ---
 export const getListofProducts = async (req: Request, res: Response) => {
