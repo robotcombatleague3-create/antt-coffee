@@ -128,26 +128,9 @@
                 <div class="col col-lg-5 col-md-6 mt-5 cart-wrap">
                     <div class="cart-total mb-3">
                         <h3>Tổng Giỏ Hàng</h3>
-                        
-                        <div class="form-group mb-2">
-                            <label style="font-size: 13px; color: #ccc;">Chọn mã đã lưu:</label>
-                            <select id="savedVouchersSelect" class="form-control" style="background: rgba(255,255,255,0.05) !important; color: #c49b63 !important; border: 1px solid rgba(255,255,255,0.1);">
-                                <option value="">-- Kho Voucher của bạn --</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group d-flex">
-                            <input type="text" id="voucherInput" class="form-control" placeholder="Hoặc nhập mã" style="background: rgba(255,255,255,0.05) !important; color: white !important; height: auto;">
-                            <button type="button" onclick="applyVoucher()" class="btn btn-primary py-3 px-3 ml-2">Áp dụng</button>
-                        </div>
-                        <p id="voucherMessage" class="text-danger mt-1" style="font-size: 13px; min-height: 20px;"></p>
                         <p class="d-flex">
                             <span>Tạm tính</span>
-                            <span id="cartTotal" data-value="0">0 VND</span>
-                        </p>
-                        <p class="d-flex">
-                            <span>Giảm giá</span>
-                            <span id="discountAmount">0 VND</span>
+                            <span id="cartTotal">0 VND</span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
@@ -155,7 +138,7 @@
                             <span id="finalTotal">0 VND</span>
                         </p>
                     </div>
-                    <p class="text-center"><button onclick="processCheckout()" class="btn btn-primary py-3 px-4">Thanh toán</button></p>
+                    <p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4">Thanh toán</a></p>
                 </div>
             </div>
         </div>

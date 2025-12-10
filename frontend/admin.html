@@ -80,22 +80,17 @@
                         <div class="col-md-2 mb-2">
                             <input class="form-control" name="price" type="number" placeholder="Giá (VNĐ)" required>
                         </div>
-                        <div class="col-md-2 mb-2">
-                            <select class="form-control" name="cate_id" id="cateSelect">
-                                <option value="1">Cà phê</option>
-                                <option value="2">Trà</option>
-                                <option value="3">Món Ăn</option>
-                                <option value="4">Tráng Miệng</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-4 mb-2">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="customFile" name="image">
                                 <label class="custom-file-label bg-dark text-white border-secondary" for="customFile">Chọn ảnh...</label>
                             </div>
                         </div>
-                        <div class="col-md-12 mb-2">
-                            <textarea class="form-control" name="description" placeholder="Mô tả sản phẩm (Thành phần, hương vị...)" rows="2"></textarea>
+                        <div class="col-md-1 mb-2 d-flex align-items-center justify-content-center">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="activeCheck" name="active" checked>
+                                <label class="custom-control-label" for="activeCheck">Bán</label>
+                            </div>
                         </div>
                         <div class="col-md-2 mb-2">
                             <button class="btn btn-primary btn-block" type="submit">Lưu</button>

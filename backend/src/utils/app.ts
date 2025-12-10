@@ -41,9 +41,6 @@ app.use(express.json());
 // Public folder (cho file tĩnh thông thường)
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Serve frontend files
-app.use(express.static(path.join(__dirname, '../../../frontend')));
-
 // Public folder đặc biệt cho ảnh upload (truy cập qua /images/tenanh.jpg)
 app.use('/images', express.static(path.join(__dirname, '../../public/images')));
 
@@ -57,7 +54,7 @@ app.use(session({
     cookie: {
         secure: false, // Để false khi chạy localhost
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        maxAge: 1000 * 60 * 60 * 24 * 7 
     }
 }));
 

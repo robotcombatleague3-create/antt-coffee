@@ -73,57 +73,6 @@ export const saveProduct = async (req: Request, res: Response) => {
     finally { conn.release(); }
 };
 
-export const getProductById = async (req: Request, res: Response) => {
-    const { id } = req.params;          // Get ID from URL (Ex: /api/product/1)
-
-    // Check if ID is exist or not
-    if (!id) {
-        return res.status(400).json({
-            success: false,
-            message: "Missing product ID"
-        });
-    }
-
-    const conn = await getDbConnection();
-    if (!conn) {
-        return res.status(400).json({
-            success: false,
-            message: "Database connection error"
-        });
-    }
-
-    try {
-        const [rows]: any = await conn.execute(`
-            SELECT i.Item_id as id, i.Item_name as name, i.Price as price, 
-                   i.Image as image, i.Cate_id as cate_id, c.Cate_name as category 
-            FROM ITEM i
-            LEFT JOIN CATEGORY c ON i.Cate_id = c.Cate_id
-            WHERE i.Item_id = ?
-            `, [id]);
-
-        // If cannot find product
-        if (rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            })
-        }
-
-        return res.status (200).json({
-            success: true,
-            data: rows[0],               // Return first found product
-        });
-    } catch (error) {
-        console.error("Error getting product detail:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    } finally {
-        await conn.release()
-    }
-}
-
 // --- QUẢN LÝ VOUCHER (MySQL Syntax) ---
 export const getVouchers = async (req: Request, res: Response) => {
     const conn = await getDbConnection();
